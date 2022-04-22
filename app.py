@@ -183,7 +183,7 @@ errormsg=''
 def visualisations():
     # pie_data = get_sentiment_counts()
     points = [[100, 100], [200, 200], [300, 300]]
-    return 'Hi! '+errormsg
+    return 'Hi! '
 
 #
 # @app.route('/words', methods=['GET', 'POST'])
