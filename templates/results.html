@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+    <link rel="stylesheet" href="../static/mystyle.css">
+</head>
+<body>
+
+<div class="sidenav">
+    <br><br>
+  <a href="/">Plots</a>
+  <a href="/words">Word cloud</a>
+    <br><br>
+  <a href="/predictions/">Predictions</a>
+</div>
+
+<div class="main2">
+
+    <form action='/predictions/' method="post" >
+        <br><br><h1>Enter the tweet:</h1>
+        <textarea name="query" class="inputarea">{{ q }}</textarea>
+        <button type="submit" class="btn">Submit</button>
+    </form><br>
+    {{ clean_text }}
+
+    <div style="width: 100%;">
+        <div class="resultbox"><h2>Vader Score</h2><br><h3>{{ vader_result }}</h3></div>
+        <div class="resultbox"><h2>Logistic Regression</h2><br><h3>{{ logistic_result }}</h3></div>
+        <div class="resultbox"><h2>Neural Network</h2><br><h3>{{ nn_score }}</h3></div>
+
+        <br style="clear: left;" />
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

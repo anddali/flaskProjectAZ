@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="http://cdn.static.w3big.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" href="./static/mystyle.css">
+</head>
+<body>
+
+
+<div class="sidenav">
+    <br><br>
+  <a href="/">Plots</a>
+  <a href="/words">Word cloud</a>
+    <br><br>
+  <a href="/predictions/">Predictions</a>
+</div>
+
+<div class="sidenav2">
+    <br><br><a >Select Sentiment</a><br>
+  <a href="#" id="neg">Negative</a>
+  <a href="#" id="neu">Neutral</a>
+  <a href="#" id="pos">Positive</a>
+</div>
+
+<div class="main">
+
+
+<div class="grid-container" >
+    <div class="classchart"><div style="text-align: center;"><div id="m1"></div></div></div>
+
+</div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    const data_neg = JSON.parse('{{wordcloud_neg|safe}}');
+    const data_neu = JSON.parse('{{wordcloud_neu|safe}}');
+    const data_pos = JSON.parse('{{wordcloud_pos|safe}}');
+
+    const neg_el = document.getElementById('neg').onclick=function(){
+        showWordcloud(data_neg,'Top 40 words in negative tweets')
+        return false;
+    };
+
+    const neu_el = document.getElementById('neu').onclick=function(){
+        showWordcloud(data_neu,'Top 40 words in neutral tweets')
+        return false;
+    };
+
+    const pos_el = document.getElementById('pos').onclick=function(){
+        showWordcloud(data_pos,'Top 40 words in positive tweets')
+        return false;
+    };
+
+
+
+    function showWordcloud(d,title) {
+        Highcharts.chart('m1', {
+                chart: {
+
+        margin: 15,
+        width: 800,
+        height: 600,
+
+    },
+      series: [{
+        type: 'wordcloud',
+          data: d,
+        name: 'Occurrences'
+          }],
+          title: {
+            text: title
+        },
+            subtitle: {
+                            text: 'Hover the mouse to see the detail.'
+                        }
+        });
+
+      return false;
+    }
+
+    showWordcloud(data_neg,'Top 40 words in negative tweets')
+
+</script>
+
+
+</body>
+</html>
