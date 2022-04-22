@@ -218,7 +218,7 @@ def predictions():
             return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
                                    vader_result=vader_result,
                                    logistic_result=logistic_result,
-                                   #nn_score=nn_score
+                                   nn_score='Not implemented'
                                    )
         except Exception as ee:
             return errormsg + str(ee)
