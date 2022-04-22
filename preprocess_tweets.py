@@ -7,6 +7,7 @@ import re
 
 import nltk
 nltk.download('wordnet')
+nltk.download('punkt')
 
 def tokenize(text):
     return word_tokenize(text)
