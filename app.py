@@ -9,35 +9,38 @@ import json
 
 
 app = Flask(__name__)
-#
 
+
+
+log_model=None
+tfidf_vectorizer=None
+tokenizer=None
 errormsg=''
-# try:
-#
+nnmodel = None
+
 df = pd.read_csv('final_data.csv')
-#     errormsg+=' pd ok;'
-#     log_model = pickle.load(open('logistic_model.sav', 'rb'))
-#     errormsg += ' model ok;'
-#     tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
-#     errormsg += ' vect ok;'
-#     tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
-#     errormsg += ' token ok;'
-# except Exception as e:
-#     errormsg += str(e)
-# nnmodel = None
-#
-#
-# #nnmodel = keras.models.load_model('saved_models')
-#
-#
-# def logistic_score(sentence):
-#     try:
-#         sentiment_to_text = {-1: 'Negative', 0: 'Neutral', 1: 'Positive'}
-#         tf_idf = tfidf_vectorizer.transform([sentence])
-#         result = log_model.predict(pd.DataFrame(tf_idf.toarray()))
-#         return sentiment_to_text[result[0]]
-#     except Exception as e:
-#         return 'NA'
+try:
+    errormsg+=' pd ok;'
+    log_model = pickle.load(open('logistic_model.sav', 'rb'))
+    errormsg += ' model ok;'
+    tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
+    errormsg += ' vect ok;'
+    tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
+    errormsg += ' token ok;'
+    #nnmodel = keras.models.load_model('saved_models')
+    #errormsg += ' token ok;'
+except Exception as e:
+    errormsg += str(e)
+
+
+def logistic_score(sentence):
+    try:
+        sentiment_to_text = {-1: 'Negative', 0: 'Neutral', 1: 'Positive'}
+        tf_idf = tfidf_vectorizer.transform([sentence])
+        result = log_model.predict(pd.DataFrame(tf_idf.toarray()))
+        return sentiment_to_text[result[0]]
+    except Exception as e:
+        return 'NA'
 
 
 def vader_sentiment_score(sentence):
@@ -54,18 +57,18 @@ def vader_sentiment_score(sentence):
         return 'NA'
 
 
-def neural_network_score(sentence):
-    return 'NA'
-    #try:
-    #    labels = ['Negative', 'Neutral', 'Positive']
-    #    s = tokenizer.texts_to_sequences([sentence])
-    #    s = sequence.pad_sequences(s, maxlen=100)
-    #    pred = nnmodel.predict(s)
-    #    print(pred)
-    #    return labels[np.argmax(pred)]
-    #except Exception as e:
-    #    print(e)
-    #return 'NA'
+# def neural_network_score(sentence):
+#
+#     try:
+#        labels = ['Negative', 'Neutral', 'Positive']
+#        s = tokenizer.texts_to_sequences([sentence])
+#        s = sequence.pad_sequences(s, maxlen=100)
+#        pred = nnmodel.predict(s)
+#        print(pred)
+#        return labels[np.argmax(pred)]
+#     except Exception as e:
+#        print(e)
+#     return 'NA'
 
 
 def get_sentiment_counts():
@@ -195,23 +198,23 @@ def wordcloud():
                            wordcloud_pos=json.dumps(positive_wordcloud))
 
 #
-# @app.route('/predictions/', methods=['GET', 'POST'])
-# def predictions():
-#     if request.method == 'POST':
-#         query = request.form['query']
-#         cleaned_query = preprocess_tweets.process_tweet(query)
-#         vader_result = vader_sentiment_score(cleaned_query)
-#         logistic_result = logistic_score(cleaned_query)
-#         nn_score = neural_network_score(cleaned_query)
-#         return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
-#                                vader_result=vader_result,
-#                                logistic_result=logistic_result,
-#                                nn_score=nn_score)
-#     else:
-#         return render_template('results.html',
-#                                vader_result='NA',
-#                                logistic_result='NA',
-#                                nn_score='NA')
+@app.route('/predictions/', methods=['GET', 'POST'])
+def predictions():
+    if request.method == 'POST':
+        query = request.form['query']
+        cleaned_query = preprocess_tweets.process_tweet(query)
+        vader_result = vader_sentiment_score(cleaned_query)
+        logistic_result = logistic_score(cleaned_query)
+        nn_score = neural_network_score(cleaned_query)
+        return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
+                               vader_result=vader_result,
+                               logistic_result=logistic_result,
+                               nn_score=nn_score)
+    else:
+        return render_template('results.html',
+                               vader_result='NA',
+                               logistic_result='NA',
+                               nn_score='NA')
 
 
 if __name__ == '__main__':
