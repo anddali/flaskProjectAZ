@@ -23,7 +23,7 @@ try:
     tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
     errormsg += ' token ok;'
 except Exception as e:
-    errormsg = str(e)
+    errormsg += str(e)
 # nnmodel = None
 #
 #
