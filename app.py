@@ -220,7 +220,8 @@ def predictions():
                                    logistic_result=logistic_result,
                                    #nn_score=nn_score
                                    )
-        return errormsg
+        except Exception as ee:
+            return errormsg + str(ee)
     else:
         return render_template('results.html',
                                vader_result='NA',
