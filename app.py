@@ -10,7 +10,7 @@ import json
 
 app = Flask(__name__)
 #
-# df = pd.read_csv('data/final_data.csv')
+df = pd.read_csv('data/final_data.csv')
 #
 # with open('saved_models/logistic_model.sav', 'rb') as file:
 #     log_model = pickle.load(file)
