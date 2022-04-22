@@ -11,19 +11,19 @@ import json
 app = Flask(__name__)
 #
 
-
-try:
-    errormsg=''
-    df = pd.read_csv('final_data.csv')
-    errormsg+=' pd ok;'
-    log_model = pickle.load(open('logistic_model.sav', 'rb'))
-    errormsg += ' model ok;'
-    tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
-    errormsg += ' vect ok;'
-    tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
-    errormsg += ' token ok;'
-except Exception as e:
-    errormsg += str(e)
+errormsg=''
+# try:
+#
+#     df = pd.read_csv('final_data.csv')
+#     errormsg+=' pd ok;'
+#     log_model = pickle.load(open('logistic_model.sav', 'rb'))
+#     errormsg += ' model ok;'
+#     tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
+#     errormsg += ' vect ok;'
+#     tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
+#     errormsg += ' token ok;'
+# except Exception as e:
+#     errormsg += str(e)
 # nnmodel = None
 #
 #
@@ -183,7 +183,7 @@ except Exception as e:
 def visualisations():
     # pie_data = get_sentiment_counts()
     points = [[100, 100], [200, 200], [300, 300]]
-    return 'Hi! '+errormsg+', '+str(len(df))
+    return 'Hi! '+errormsg
 
 #
 # @app.route('/words', methods=['GET', 'POST'])
