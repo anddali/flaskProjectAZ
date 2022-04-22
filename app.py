@@ -13,12 +13,12 @@ app = Flask(__name__)
 
 
 try:
-    df = pd.read_csv('data/final_data.csv')
-    with open('saved_models/logistic_model.sav', 'rb') as file:
+    df = pd.read_csv('final_data.csv')
+    with open('logistic_model.sav', 'rb') as file:
         log_model = pickle.load(file)
-    with open('saved_models/tfidf_vectorizer.sav', 'rb') as file:
+    with open('tfidf_vectorizer.sav', 'rb') as file:
         tfidf_vectorizer = pickle.load(file)
-    with open('saved_models/tokenizer.sav', 'rb') as file:
+    with open('tokenizer.sav', 'rb') as file:
         tokenizer = pickle.load(file)
     errormsg='all good'
 except:
