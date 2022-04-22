@@ -14,12 +14,12 @@ app = Flask(__name__)
 
 try:
     df = pd.read_csv('final_data.csv')
-    with open('logistic_model.sav', 'rb') as file:
-        log_model = pickle.load(file)
-    with open('tfidf_vectorizer.sav', 'rb') as file:
-        tfidf_vectorizer = pickle.load(file)
-    with open('tokenizer.sav', 'rb') as file:
-        tokenizer = pickle.load(file)
+
+    log_model = pickle.load(open('logistic_model.sav', 'rb'))
+
+    tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
+
+    tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
     errormsg='all good'
 except:
     errormsg = 'cant open models'
@@ -182,7 +182,7 @@ except:
 def visualisations():
     # pie_data = get_sentiment_counts()
     points = [[100, 100], [200, 200], [300, 300]]
-    return 'Hi! '+errormsg
+    return 'Hi! '+errormsg+', '+str(len(df))
 
 #
 # @app.route('/words', methods=['GET', 'POST'])
