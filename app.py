@@ -17,7 +17,7 @@ df = pd.read_csv('data/final_data.csv')
 # with open('saved_models/tfidf_vectorizer.sav', 'rb') as file:
 #     tfidf_vectorizer = pickle.load(file)
 # with open('saved_models/tokenizer.sav', 'rb') as file:
-    tokenizer = pickle.load(file)
+#     tokenizer = pickle.load(file)
 # nnmodel = None
 #
 #
