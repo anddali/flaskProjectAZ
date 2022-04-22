@@ -19,18 +19,26 @@ errormsg=''
 nnmodel = None
 
 df = pd.read_csv('final_data.csv')
+
 try:
-    errormsg+=' pd ok;'
     log_model = pickle.load(open('logistic_model.sav', 'rb'))
-    errormsg += ' model ok;'
-    tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
-    errormsg += ' vect ok;'
-    tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
-    errormsg += ' token ok;'
-    #nnmodel = keras.models.load_model('saved_models')
-    #errormsg += ' token ok;'
+    errormsg += ' logistic_model ok;\n'
 except Exception as e:
     errormsg += str(e)
+try:
+    tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
+    errormsg += ' vect ok;\n'
+except Exception as e:
+    errormsg += str(e)
+try:
+    tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
+    errormsg += ' token ok;\n'
+except Exception as e:
+    errormsg += str(e)
+
+    #nnmodel = keras.models.load_model('saved_models')
+    #errormsg += ' token ok;'
+
 
 
 def logistic_score(sentence):
@@ -201,15 +209,18 @@ def wordcloud():
 @app.route('/predictions/', methods=['GET', 'POST'])
 def predictions():
     if request.method == 'POST':
-        query = request.form['query']
-        cleaned_query = preprocess_tweets.process_tweet(query)
-        vader_result = vader_sentiment_score(cleaned_query)
-        logistic_result = logistic_score(cleaned_query)
-        nn_score = neural_network_score(cleaned_query)
-        return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
-                               vader_result=vader_result,
-                               logistic_result=logistic_result,
-                               nn_score=nn_score)
+        try:
+            query = request.form['query']
+            cleaned_query = preprocess_tweets.process_tweet(query)
+            vader_result = vader_sentiment_score(cleaned_query)
+            logistic_result = logistic_score(cleaned_query)
+            #nn_score = neural_network_score(cleaned_query)
+            return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
+                                   vader_result=vader_result,
+                                   logistic_result=logistic_result,
+                                   #nn_score=nn_score
+                                   )
+        return errormsg
     else:
         return render_template('results.html',
                                vader_result='NA',
