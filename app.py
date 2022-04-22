@@ -102,6 +102,18 @@ def get_sentiment_counts_per_topic():
 
     return {'negative': negative, 'neutral': neutral, 'positive': positive}
 
+def transform_sun_data(sun):
+    indexes=[-1,0,1]
+    res = []
+    for i in indexes:
+        try:
+            x = int(sun[i])
+        except Exception as e:
+            x = 0
+        res.append(x)
+    return res
+
+
 def get_data_for_sunburst():
     country_continent = {'England': 'Europe', 'Nigeria': 'Africa', 'Usa': 'North America', 'Uganda': 'Africa', 'Cameroon': 'Africa', 'Germany': 'Europe',
                      'Sweden': 'Europe', 'Ghana': 'Africa', 'Denmark': 'Europe', 'Kenya': 'Africa', 'South Africa': 'Africa',
@@ -117,8 +129,137 @@ def get_data_for_sunburst():
                      'Serbia': 'Europe', 'Malta': 'Europe', 'Belarus': 'Europe', 'Finland': 'Europe', 'Zambia': 'Africa',
                      'Uzbekistan': 'Asia',
                      'Latvia': 'Europe'}
+    df['Continent'] = df.apply(lambda row: country_continent[row.user_location], axis=1)
+    europe = transform_sun_data(df.loc[df['Continent'] == 'Europe', ['class']].value_counts())
+    asia = transform_sun_data(df.loc[df['Continent'] == 'Asia', ['class']].value_counts())
+    australia = transform_sun_data(df.loc[df['Continent'] == 'Australia', ['class']].value_counts())
+    africa = transform_sun_data(df.loc[df['Continent'] == 'Africa', ['class']].value_counts())
+    north_america = transform_sun_data(df.loc[df['Continent'] == 'North America', ['class']].value_counts())
+    south_america = transform_sun_data(df.loc[df['Continent'] == 'South America', ['class']].value_counts())
+    sun = [{
+    'id': '0.0',
+    'parent': '',
+    'name': 'Tweets'
+    },{
+    'id': '1.1',
+    'parent': '0.0',
+    'name': 'Europe'
+    },{
+    'id': '1.2',
+    'parent': '0.0',
+    'name': 'Asia'
+    },{
+    'id': '1.3',
+    'parent': '0.0',
+    'name': 'Africa'
+    },{
+    'id': '1.4',
+    'parent': '0.0',
+    'name': 'Australia'
+    },{
+    'id': '1.5',
+    'parent': '0.0',
+    'name': 'North America'
+    },{
+    'id': '1.6',
+    'parent': '0.0',
+    'name': 'South America'
+    },{
+    'id': '2.1',
+    'parent': '1.1',
+    'name': 'Negative',
+    'value': europe[0]
+    },{
+    'id': '2.2',
+    'parent': '1.1',
+    'name': 'Neutral',
+    'value': europe[1]
+    },{
+    'id': '2.3',
+    'parent': '1.1',
+    'name': 'Positive',
+    'value': europe[2]
+    },{
+    'id': '2.1',
+    'parent': '1.2',
+    'name': 'Negative',
+    'value': int(asia[0])
+    },{
+    'id': '2.2',
+    'parent': '1.2',
+    'name': 'Neutral',
+    'value': int(asia[1])
+    },{
+    'id': '2.3',
+    'parent': '1.2',
+    'name': 'Positive',
+    'value': int(asia[2])
+    },{
+    'id': '2.1',
+    'parent': '1.3',
+    'name': 'Negative',
+    'value': int(africa[0])
+    },{
+    'id': '2.2',
+    'parent': '1.3',
+    'name': 'Neutral',
+    'value': int(africa[1])
+    },{
+    'id': '2.3',
+    'parent': '1.3',
+    'name': 'Positive',
+    'value': int(africa[2])
+    },{
+    'id': '2.1',
+    'parent': '1.4',
+    'name': 'Negative',
+    'value': int(australia[0])
+    },{
+    'id': '2.2',
+    'parent': '1.4',
+    'name': 'Neutral',
+    'value': int(australia[1])
+    },{
+    'id': '2.3',
+    'parent': '1.4',
+    'name': 'Positive',
+    'value': int(australia[2])
+    },{
+    'id': '2.1',
+    'parent': '1.5',
+    'name': 'Negative',
+    'value': int(north_america[0])
+    },{
+    'id': '2.2',
+    'parent': '1.5',
+    'name': 'Neutral',
+    'value': int(north_america[1])
+    },{
+    'id': '2.3',
+    'parent': '1.5',
+    'name': 'Positive',
+    'value': int(north_america[2])
+    },{
+    'id': '2.1',
+    'parent': '1.6',
+    'name': 'Negative',
+    'value': int(south_america[0])
+    },{
+    'id': '2.2',
+    'parent': '1.6',
+    'name': 'Neutral',
+    'value': int(south_america[1])
+    },{
+    'id': '2.3',
+    'parent': '1.6',
+    'name': 'Positive',
+    'value': int(south_america[2])
+    }
 
-    return None
+    ]
+
+    return sun
+
 
 def get_data_for_map():
     country_codes = {'England': 'GB', 'Nigeria': 'NG', 'Usa': 'US', 'Uganda': 'UG', 'Cameroon': 'CM', 'Germany': 'DE',
@@ -181,15 +322,16 @@ def get_wordcloud():
 
 @app.route('/')
 def visualisations():
+    sun = get_data_for_sunburst()
     pie_data = get_sentiment_counts()
     points = [[100, 100], [200, 200], [300, 300]]
     return render_template('index.html', pie_data=pie_data,
                            points=points,
                            topics=df['query'].unique().tolist(),
                            topic_data=get_sentiment_counts_per_topic(),
-                           country_data=get_data_for_map()
+                           country_data=get_data_for_map(),
+                           sun=json.dumps(sun)
                            )
-
 # @app.route('/')
 # def visualisations():
 #     # pie_data = get_sentiment_counts()
