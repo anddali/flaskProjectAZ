@@ -6,7 +6,7 @@ import re
 
 
 import nltk
-#nltk.download('wordnet')
+nltk.download('wordnet')
 
 def tokenize(text):
     return word_tokenize(text)
