@@ -10,14 +10,19 @@ import json
 
 app = Flask(__name__)
 #
-df = pd.read_csv('data/final_data.csv')
 
-# with open('saved_models/logistic_model.sav', 'rb') as file:
-#     log_model = pickle.load(file)
-# with open('saved_models/tfidf_vectorizer.sav', 'rb') as file:
-#     tfidf_vectorizer = pickle.load(file)
-# with open('saved_models/tokenizer.sav', 'rb') as file:
-#     tokenizer = pickle.load(file)
+
+try:
+    df = pd.read_csv('data/final_data.csv')
+    with open('saved_models/logistic_model.sav', 'rb') as file:
+        log_model = pickle.load(file)
+    with open('saved_models/tfidf_vectorizer.sav', 'rb') as file:
+        tfidf_vectorizer = pickle.load(file)
+    with open('saved_models/tokenizer.sav', 'rb') as file:
+        tokenizer = pickle.load(file)
+    errormsg='all good'
+except:
+    errormsg = 'cant open models'
 # nnmodel = None
 #
 #
@@ -177,7 +182,7 @@ df = pd.read_csv('data/final_data.csv')
 def visualisations():
     # pie_data = get_sentiment_counts()
     points = [[100, 100], [200, 200], [300, 300]]
-    return 'Hi!'+len(df)
+    return 'Hi! '+errormsg
 
 #
 # @app.route('/words', methods=['GET', 'POST'])
