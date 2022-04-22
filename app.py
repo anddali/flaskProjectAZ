@@ -57,18 +57,18 @@ def vader_sentiment_score(sentence):
         return 'NA'
 
 
-# def neural_network_score(sentence):
-#
-#     try:
-#        labels = ['Negative', 'Neutral', 'Positive']
-#        s = tokenizer.texts_to_sequences([sentence])
-#        s = sequence.pad_sequences(s, maxlen=100)
-#        pred = nnmodel.predict(s)
-#        print(pred)
-#        return labels[np.argmax(pred)]
-#     except Exception as e:
-#        print(e)
-#     return 'NA'
+def neural_network_score(sentence):
+
+    # try:
+    #    labels = ['Negative', 'Neutral', 'Positive']
+    #    s = tokenizer.texts_to_sequences([sentence])
+    #    s = sequence.pad_sequences(s, maxlen=100)
+    #    pred = nnmodel.predict(s)
+    #    print(pred)
+    #    return labels[np.argmax(pred)]
+    # except Exception as e:
+    #    print(e)
+    return 'NA'
 
 
 def get_sentiment_counts():
