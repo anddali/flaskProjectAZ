@@ -165,45 +165,50 @@ def get_wordcloud():
 
     return get_words(negative), get_words(neutral), get_words(positive)
 
+# @app.route('/')
+# def visualisations():
+#     pie_data = get_sentiment_counts()
+#     points = [[100, 100], [200, 200], [300, 300]]
+#     return render_template('index.html', pie_data=pie_data,
+#                            points=points,
+#                            topics=df['query'].unique().tolist(),
+#                            topic_data=get_sentiment_counts_per_topic(),
+#                            country_data=get_data_for_map()
+#                            )
 
 @app.route('/')
 def visualisations():
-    pie_data = get_sentiment_counts()
+    # pie_data = get_sentiment_counts()
     points = [[100, 100], [200, 200], [300, 300]]
-    return render_template('index.html', pie_data=pie_data,
-                           points=points,
-                           topics=df['query'].unique().tolist(),
-                           topic_data=get_sentiment_counts_per_topic(),
-                           country_data=get_data_for_map()
-                           )
+    return 'Hi!'
 
-
-@app.route('/words', methods=['GET', 'POST'])
-def wordcloud():
-    negative_wordcloud, neutral_wordcloud, positive_wordcloud = get_wordcloud()
-    print(wordcloud)
-    return render_template('words.html', wordcloud_neg=json.dumps(negative_wordcloud),
-                           wordcloud_neu=json.dumps(neutral_wordcloud),
-                           wordcloud_pos=json.dumps(positive_wordcloud))
-
-
-@app.route('/predictions/', methods=['GET', 'POST'])
-def predictions():
-    if request.method == 'POST':
-        query = request.form['query']
-        cleaned_query = preprocess_tweets.process_tweet(query)
-        vader_result = vader_sentiment_score(cleaned_query)
-        logistic_result = logistic_score(cleaned_query)
-        nn_score = neural_network_score(cleaned_query)
-        return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
-                               vader_result=vader_result,
-                               logistic_result=logistic_result,
-                               nn_score=nn_score)
-    else:
-        return render_template('results.html',
-                               vader_result='NA',
-                               logistic_result='NA',
-                               nn_score='NA')
+#
+# @app.route('/words', methods=['GET', 'POST'])
+# def wordcloud():
+#     negative_wordcloud, neutral_wordcloud, positive_wordcloud = get_wordcloud()
+#     print(wordcloud)
+#     return render_template('words.html', wordcloud_neg=json.dumps(negative_wordcloud),
+#                            wordcloud_neu=json.dumps(neutral_wordcloud),
+#                            wordcloud_pos=json.dumps(positive_wordcloud))
+#
+#
+# @app.route('/predictions/', methods=['GET', 'POST'])
+# def predictions():
+#     if request.method == 'POST':
+#         query = request.form['query']
+#         cleaned_query = preprocess_tweets.process_tweet(query)
+#         vader_result = vader_sentiment_score(cleaned_query)
+#         logistic_result = logistic_score(cleaned_query)
+#         nn_score = neural_network_score(cleaned_query)
+#         return render_template('results.html', q=query, clean_text='Cleaned text: ' + cleaned_query,
+#                                vader_result=vader_result,
+#                                logistic_result=logistic_result,
+#                                nn_score=nn_score)
+#     else:
+#         return render_template('results.html',
+#                                vader_result='NA',
+#                                logistic_result='NA',
+#                                nn_score='NA')
 
 
 if __name__ == '__main__':
