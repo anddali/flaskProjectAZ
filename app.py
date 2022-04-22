@@ -13,16 +13,17 @@ app = Flask(__name__)
 
 
 try:
+    errormsg=''
     df = pd.read_csv('final_data.csv')
-
+    errormsg+=' pd ok;'
     log_model = pickle.load(open('logistic_model.sav', 'rb'))
-
+    errormsg += ' model ok;'
     tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.sav', 'rb'))
-
+    errormsg += ' vect ok;'
     tokenizer = pickle.load(open('tokenizer.sav', 'rb'))
-    errormsg='all good'
-except:
-    errormsg = 'cant open models'
+    errormsg += ' token ok;'
+except Exception as e:
+    errormsg = str(e)
 # nnmodel = None
 #
 #
